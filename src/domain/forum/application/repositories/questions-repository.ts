@@ -1,18 +1,18 @@
 import { PaginationParams } from '@/core/repositories/pagination-params'
 import { Question } from '../../enterprise/entities/question'
 
-export interface QuestionsRepository {
+export abstract class QuestionsRepository {
 
-  findById(id: string): Promise<Question | null>
+  abstract findById(id: string): Promise<Question | null>
 
-  findManyRecent(params: PaginationParams): Promise<Question[]>
+  abstract findManyRecent(params: PaginationParams): Promise<Question[]>
 
-  findBySlug(slug: string): Promise<Question | null> 
+  abstract findBySlug(slug: string): Promise<Question | null> 
 
-  create(question: Question): Promise<void>
+  abstract create(question: Question): Promise<void>
 
-  save(question: Question): Promise<void>
+  abstract save(question: Question): Promise<void>
 
-  delete(question: Question): Promise<void>
+  abstract delete(question: Question): Promise<void>
 
 }
