@@ -11,7 +11,7 @@ interface AuthenticateStudentUseCaseRequest {
   password: string
 }
 
-type AuthenticateStudentUseCaseResponse = Either<WrongCredentialsError, { accessToken: string }>
+export type AuthenticateStudentUseCaseResponse = Either<WrongCredentialsError, { accessToken: string }>
 
 @Injectable()
 export class AuthenticateStudentUseCase {

@@ -1,9 +1,7 @@
 import { Body, Controller, HttpCode, Post, UnauthorizedException, UsePipes } from '@nestjs/common'
-import { JwtService } from '@nestjs/jwt'
-import { compare } from 'bcryptjs'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
-import { PrismaService } from '@/infra/database/prisma/prisma.service'
 import { z } from 'zod'
+import { AuthenticateStudentUseCase } from '@/domain/forum/application/use-cases/authenticate-student'
 
 const authenticateBodySchema = z.object({
   email: z.string().email(),
@@ -15,7 +13,7 @@ type AuthenticateBodySchema = z.infer<typeof authenticateBodySchema>
 @Controller('/sessions')
 export class AuthenticateController {
   
-  constructor(private jwt: JwtService, private prisma: PrismaService) {}
+  constructor(private authenticateStudent: AuthenticateStudentUseCase) {}
 
   @Post()
   @HttpCode(201)
@@ -23,16 +21,17 @@ export class AuthenticateController {
   async handle(@Body() body: AuthenticateBodySchema) {
     const { email, password } = body
 
-    const user = await this.prisma.user.findUnique({ where: { email } })
+    const response = await this.authenticateStudent.execute({
+      email,
+      password
+    })
 
-    if (!user) throw new UnauthorizedException('User credentials do not macth')
+    if (response.isRight()) {
+      const { accessToken } = response.value
 
-    const isPasswordValid = await compare(password, user.password)
-
-    if(!isPasswordValid) throw new UnauthorizedException('User credentials do not macth')
-
-    const accessToken = this.jwt.sign({ sub: user.id })
-
-    return { access_token: accessToken }
+      return { access_token: accessToken }
+    } else {
+      throw new Error()
+    }
   }
 }
