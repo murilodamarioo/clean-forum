@@ -1,4 +1,3 @@
-import { Entity } from '@/core/entities/entity'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/optional'
 import { AnswerAttachmentList } from './answer-attachment-list'
@@ -11,7 +10,7 @@ export interface AnswerProps {
   content: string
   attachments: AnswerAttachmentList
   createdAt: Date
-  updatedAt?: Date
+  updatedAt?: Date | null
 }
 
 export class Answer extends AggregateRoot<AnswerProps> {
@@ -42,7 +41,7 @@ export class Answer extends AggregateRoot<AnswerProps> {
     this.touch()
   }
 
-  get createAt() {
+  get createdAt() {
     return this.props.createdAt
   }
 
