@@ -15,7 +15,7 @@ interface ResgiterStudentUseCaseRequest {
 type ResgiterStudentUseCaseResponse = Either<StudentAlreadyExistsError, { student: Student }>
 
 @Injectable()
-export class ResgiterStudentUseCase {
+export class RegisterStudentUseCase {
   constructor(private studentsRepository: StudentsRepository, private hashGenerator: HashGenerator) {}
  
   async execute({ name, email, password }: ResgiterStudentUseCaseRequest): Promise<ResgiterStudentUseCaseResponse> {
