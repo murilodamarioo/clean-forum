@@ -5,27 +5,24 @@ import { INestApplication } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { Test } from '@nestjs/testing'
 import request from 'supertest'
-import { QuestionFactory } from 'test/factories/make-questions'
 import { StudentFactory } from 'test/factories/make-student'
 
 describe('Create question (E2E)', () => {
   let app: INestApplication
   let prisma: PrismaService
   let studentFacotry: StudentFactory
-  let questionFacotry: QuestionFactory
   let jwt: JwtService
   
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, DatabaseModule],
-      providers: [StudentFactory, QuestionFactory]
+      providers: [StudentFactory]
     }).compile()
 
     app = moduleRef.createNestApplication()
 
     prisma = moduleRef.get(PrismaService)
     studentFacotry = moduleRef.get(StudentFactory)
-    questionFacotry = moduleRef.get(QuestionFactory)
     jwt = moduleRef.get(JwtService)
 
     await app.init()
