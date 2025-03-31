@@ -41,7 +41,7 @@ describe('Delete answer (E2E)', () => {
 
     const questionId = question.id.toString()
 
-    const response = await request(app.getHttpServer)
+    const response = await request(app.getHttpServer())
       .delete(`/questions/${questionId}`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send()
