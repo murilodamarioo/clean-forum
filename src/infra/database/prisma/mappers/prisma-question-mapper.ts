@@ -24,7 +24,7 @@ export class PrismaQuestionMapper {
       title: question.title,
       content: question.content,
       slug: question.slug.value,
-      createdAt: question.createAt,
+      createdAt: question.createdAt,
       updatedAt: question.updatedAt
     }
   }
