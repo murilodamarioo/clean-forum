@@ -1,4 +1,4 @@
-import { Question } from "@/domain/forum/enterprise/entities/question";
+import { Question } from '@/domain/forum/enterprise/entities/question'
 
 export class QuestionPresenter {
 
@@ -8,7 +8,7 @@ export class QuestionPresenter {
       title: question.title,
       slug: question.slug.value,
       bestAnswerId: question.bestAnswerId?.toString(),
-      createdAt: question.createAt,
+      createdAt: question.createdAt,
       updatedAt: question.updatedAt
     }
   }

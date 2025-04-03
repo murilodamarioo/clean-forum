@@ -70,7 +70,7 @@ export class Question extends AggregateRoot<QuestionProps> {
     this.touch()
   }
 
-  get createAt() {
+  get createdAt() {
     return this.props.createdAt
   }
 
@@ -79,7 +79,7 @@ export class Question extends AggregateRoot<QuestionProps> {
   }
 
   get isNew(): boolean {
-    return dayjs().diff(this.createAt, 'days') <= 3
+    return dayjs().diff(this.createdAt, 'days') <= 3
   }
 
   get execerpt() {
