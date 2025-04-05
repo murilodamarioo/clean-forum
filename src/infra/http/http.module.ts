@@ -30,6 +30,8 @@ import { ChooseQuestionBestAnswerUseCase } from '@/domain/forum/application/use-
 import { CommentOnQuestionController } from './controllers/comment-on-question.controller'
 import { CommentOnQuestionUseCase } from '@/domain/forum/application/use-cases/comment-on-question'
 import { DeleteQuestionCommentController } from './controllers/delete-question-comment.controller'
+import { CommentOnAnswerController } from './controllers/comment-on-answer.controller'
+import { CommentOnAnswerUseCase } from '@/domain/forum/application/use-cases/comment-on-answer'
 
 @Module({
   imports: [
@@ -51,6 +53,7 @@ import { DeleteQuestionCommentController } from './controllers/delete-question-c
     ChooseQuestionBestAnswerController,
     CommentOnQuestionController,
     DeleteQuestionCommentController,
+    CommentOnAnswerController,
   ],
   providers: [
     CreateQuestionUseCase,
@@ -67,6 +70,7 @@ import { DeleteQuestionCommentController } from './controllers/delete-question-c
     ChooseQuestionBestAnswerUseCase,
     CommentOnQuestionUseCase,
     DeleteQuestionUseCase,
+    CommentOnAnswerUseCase,
   ]
 })
 export class HttpModule {}
