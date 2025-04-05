@@ -10,51 +10,53 @@ import { PrismaService } from '@/infra/database/prisma/prisma.service'
 
 describe('Comment on question (E2E)', () => {
   let app: INestApplication
-  let jwt: JwtService
   let prisma: PrismaService
   let studentFactory: StudentFactory
   let questionFactory: QuestionFactory
+  let jwt: JwtService
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
-      imports: [DatabaseModule, AppModule],
-      providers: [StudentFactory, QuestionFactory]
+      imports: [AppModule, DatabaseModule],
+      providers: [StudentFactory, QuestionFactory],
     }).compile()
 
     app = moduleRef.createNestApplication()
 
-    jwt = moduleRef.get(JwtService)
     prisma = moduleRef.get(PrismaService)
     studentFactory = moduleRef.get(StudentFactory)
     questionFactory = moduleRef.get(QuestionFactory)
+    jwt = moduleRef.get(JwtService)
 
-    app.init()
+    await app.init()
   })
 
   test('[POST] /questions/:questionId/comments', async () => {
     const user = await studentFactory.makePrismaStudent()
 
-    const accessToken = jwt.sign({ sub: user.id })
+    const accessToken = jwt.sign({ sub: user.id.toString() })
 
-    const question = await questionFactory.makePrismaQuestion({ authorId: user.id })
+    const question = await questionFactory.makePrismaQuestion({
+      authorId: user.id,
+    })
+
     const questionId = question.id.toString()
 
     const response = await request(app.getHttpServer())
       .post(`/questions/${questionId}/comments`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
-        content: 'Answer comment'
+        content: 'New comment',
       })
 
     expect(response.statusCode).toBe(201)
 
     const commentOnDatabase = await prisma.comment.findFirst({
       where: {
-        content: 'Answer comment'
-      }
+        content: 'New comment',
+      },
     })
 
     expect(commentOnDatabase).toBeTruthy()
-    
   })
 })

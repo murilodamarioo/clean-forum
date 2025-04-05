@@ -30,14 +30,14 @@ describe('Choose question best answer (E2E)', () => {
     questionFactory = moduleRef.get(QuestionFactory)
     answerFactory = moduleRef.get(AnswerFactory)
 
-    app.init()
+    await app.init()
   })
 
   test('[PATCH] /answers/:answerId/choose-as-best', async () => {
     const questionAuthor = await studentFactory.makePrismaStudent()
     const answerAuthor = await studentFactory.makePrismaStudent()
     
-    const accessToken = jwt.sign({ sub: questionAuthor.id })
+    const accessToken = jwt.sign({ sub: questionAuthor.id.toString() })
 
     const question = await questionFactory.makePrismaQuestion({ authorId: questionAuthor.id })
 
