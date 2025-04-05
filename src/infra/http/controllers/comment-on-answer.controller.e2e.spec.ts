@@ -61,5 +61,7 @@ describe('Comment on answer (E2E)', () => {
         content: 'New comment answer'
       }
     })
+
+    expect(commentOnDatabase).toBeTruthy()
   })
 })
