@@ -14,7 +14,7 @@ interface UploadAndCreateAttachmentUseCaseRequest {
 type UploadAndCreateAttachmentUseCaseResponse = Either<InvalidAttachmentType, { attachment: Attachment }>
 
 @Injectable()
-export class UploadAttachmentUseCase {
+export class UploadAndCreateAttachmentUseCase {
   constructor(private attachmentsRepository: AttachmentsRepository, private uploader: Uploader) {}
  
   async execute({ fileName, fileType, body }: UploadAndCreateAttachmentUseCaseRequest): Promise<UploadAndCreateAttachmentUseCaseResponse> {
