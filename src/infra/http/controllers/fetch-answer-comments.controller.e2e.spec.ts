@@ -28,7 +28,7 @@ describe('Fetch answer comments (E2E)', () => {
     jwt = moduleRef.get(JwtService)
     studentFactory = moduleRef.get(StudentFactory)
     questionFacotry = moduleRef.get(QuestionFactory)
-    answerFactory = moduleRef.get(AnswerCommentFactory)
+    answerFactory = moduleRef.get(AnswerFactory)
     answerCommentFactory = moduleRef.get(AnswerCommentFactory)
 
     await app.init()

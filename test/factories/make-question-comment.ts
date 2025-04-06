@@ -4,6 +4,7 @@ import { PrismaQuestionCommentMapper } from '@/infra/database/prisma/mappers/pri
 import { PrismaService } from '@/infra/database/prisma/prisma.service'
 
 import { faker } from '@faker-js/faker'
+import { Injectable } from '@nestjs/common'
 
 export function makeQuestionComment(override: Partial<QuestionCommentsProps> = {}, id?: UniqueEntityID) {
   const questionComment = QuestionComment.create(
@@ -19,6 +20,7 @@ export function makeQuestionComment(override: Partial<QuestionCommentsProps> = {
   return questionComment
 }
 
+@Injectable()
 export class QuestionCommentFactory {
   constructor(private prisma: PrismaService) {}
 
