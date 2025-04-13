@@ -11,11 +11,11 @@ describe('Upload attachment (E2E)', () => {
   let app: INestApplication
   let studentFactory: StudentFactory
   let jwt: JwtService
-  
+
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, DatabaseModule],
-      providers: [StudentFactory, QuestionFactory]
+      providers: [StudentFactory, QuestionFactory],
     }).compile()
 
     app = moduleRef.createNestApplication()
@@ -24,8 +24,8 @@ describe('Upload attachment (E2E)', () => {
     jwt = moduleRef.get(JwtService)
 
     await app.init()
-  });
-  
+  })
+
   test('[POST] /attachments', async () => {
     const user = await studentFactory.makePrismaStudent()
 
@@ -37,5 +37,8 @@ describe('Upload attachment (E2E)', () => {
       .attach('file', './test/e2e/sample-upload.jpg')
 
     expect(response.statusCode).toBe(201)
+    expect(response.body).toEqual({
+      attachmentId: expect.any(String),
+    })
   })
 })
