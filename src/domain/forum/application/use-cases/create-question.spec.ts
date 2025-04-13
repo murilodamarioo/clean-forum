@@ -15,7 +15,7 @@ describe('Create Question', () => {
     sut = new CreateQuestionUseCase(inMemoryQuestionsRepository)
   })
   
-  test('should be able to create a question', async () => {
+  it('should be able to create a question', async () => {
     const result = await sut.execute({
       authorId: '1',
       title: 'Question One',
@@ -30,5 +30,17 @@ describe('Create Question', () => {
       expect.objectContaining({ attachmentId: new UniqueEntityID('1') }),
       expect.objectContaining({ attachmentId: new UniqueEntityID('2') })
     ])
+  })
+
+  it ('should persists attachments when creating a new question', async () => {
+    const result = await sut.execute({
+      authorId: '1',
+      title: 'Question One',
+      content: 'New question',
+      attachmentsIds: ['1', '2']
+    })
+
+    expect(result.isRight()).toBe(true)
+    expect(inMemoryQuestionAttachmentsRepository.items).toHaveLength(2)
   })
 })
