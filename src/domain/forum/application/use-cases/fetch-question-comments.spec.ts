@@ -61,7 +61,6 @@ describe('Fetch question comments', () => {
         commentId: comment3.id
       })
     ]))
-  
   })
 
   it('should be able to fetch paginated question comments', async () => {
