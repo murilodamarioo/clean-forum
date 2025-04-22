@@ -46,7 +46,7 @@ export class QuestionDetails extends ValueObject<QuestionDetailsProps> {
     return this.props.attachments
   }
 
-  get bestAnwerId() {
+  get bestAnswerId() {
     return this.props.bestAnswerId
   }
 

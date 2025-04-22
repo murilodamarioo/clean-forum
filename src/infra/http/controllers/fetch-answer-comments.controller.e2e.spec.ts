@@ -13,7 +13,7 @@ describe('Fetch answer comments (E2E)', () => {
   let app: INestApplication
   let jwt: JwtService
   let studentFactory: StudentFactory
-  let questionFacotry: QuestionFactory
+  let questionFactory: QuestionFactory
   let answerFactory: AnswerFactory
   let answerCommentFactory: AnswerCommentFactory
 
@@ -27,7 +27,7 @@ describe('Fetch answer comments (E2E)', () => {
 
     jwt = moduleRef.get(JwtService)
     studentFactory = moduleRef.get(StudentFactory)
-    questionFacotry = moduleRef.get(QuestionFactory)
+    questionFactory = moduleRef.get(QuestionFactory)
     answerFactory = moduleRef.get(AnswerFactory)
     answerCommentFactory = moduleRef.get(AnswerCommentFactory)
 
@@ -36,31 +36,34 @@ describe('Fetch answer comments (E2E)', () => {
 
   test('[GET] /answers/:answerId/comments', async () => {
     const user = await studentFactory.makePrismaStudent({
-      name: 'Jhon Doe'
+      name: 'John Doe',
     })
 
     const accessToken = jwt.sign({ sub: user.id.toString() })
 
-    const question = await questionFacotry.makePrismaQuestion({ authorId: user.id })
+    const question = await questionFactory.makePrismaQuestion({
+      authorId: user.id,
+    })
 
     const answer = await answerFactory.makePrismaAnswer({
+      questionId: question.id,
       authorId: user.id,
-      questionId: question.id
     })
-    const answerId = answer.id.toString()
 
     await Promise.all([
-      await answerCommentFactory.makePrismaAnswerComment({
-        answerId: answer.id,
+      answerCommentFactory.makePrismaAnswerComment({
         authorId: user.id,
-        content: 'Comment 01'
+        answerId: answer.id,
+        content: 'Comment 01',
       }),
-      await answerCommentFactory.makePrismaAnswerComment({
-        answerId: answer.id,
+      answerCommentFactory.makePrismaAnswerComment({
         authorId: user.id,
-        content: 'Comment 02'
-      })
+        answerId: answer.id,
+        content: 'Comment 02',
+      }),
     ])
+
+    const answerId = answer.id.toString()
 
     const response = await request(app.getHttpServer())
       .get(`/answers/${answerId}/comments`)
@@ -70,10 +73,15 @@ describe('Fetch answer comments (E2E)', () => {
     expect(response.statusCode).toBe(200)
     expect(response.body).toEqual({
       comments: expect.arrayContaining([
-        expect.objectContaining({ content: 'Comment 01', authorName: 'John Doe' }),
-        expect.objectContaining({ content: 'Comment 02', authorName: 'John Doe' })
-      ])
+        expect.objectContaining({
+          content: 'Comment 01',
+          authorName: 'John Doe',
+        }),
+        expect.objectContaining({
+          content: 'Comment 01',
+          authorName: 'John Doe',
+        }),
+      ]),
     })
   })
-  
 })

@@ -15,7 +15,7 @@ export class PrismaCommentWithAuthorMapper {
       author: raw.author.name,
       content: raw.content,
       createdAt: raw.createdAt,
-      updateAt: raw.updatedAt
+      updatedAt: raw.updatedAt
     })
   }
 
