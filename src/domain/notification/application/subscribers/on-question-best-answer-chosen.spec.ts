@@ -9,9 +9,13 @@ import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers-r
 import { InMemoryNotificationsRepository } from 'test/repositories/in-memory-notifications-repository'
 import { InMemoryQuestionAttachmentsRepository } from 'test/repositories/in-memory-question-attachments-repository'
 import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questions-repository'
+import { InMemoryStudentsRepository } from 'test/repositories/in-memory-students-repository'
+import { InMemoryAttachmentsRepository } from 'test/repositories/in-memory-attachments-repository'
 
 let inMemoryQuestionAttachmentsRepository: InMemoryQuestionAttachmentsRepository
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository
+let inMemoryStudentsRepository: InMemoryStudentsRepository
+let inMemoryAttachmentRepository: InMemoryAttachmentsRepository
 let inMemoryAnswerAttachmentsRepository: InMemoryAnswerAttachmentsRepository
 let inMemoryAnswersrepository: InMemoryAnswersRepository
 let inMemoryNotificationsRepository: InMemoryNotificationsRepository
@@ -22,7 +26,13 @@ let sendNotificationExecuteSpy: MockInstance<(request: SendNotificationUseCaseRe
 describe('On Question Best Answer Chosen', () => {
   beforeEach(() => {
     inMemoryQuestionAttachmentsRepository = new InMemoryQuestionAttachmentsRepository()
-    inMemoryQuestionsRepository = new InMemoryQuestionsRepository(inMemoryQuestionAttachmentsRepository)
+    inMemoryStudentsRepository = new InMemoryStudentsRepository()
+    inMemoryAttachmentRepository = new InMemoryAttachmentsRepository()
+    inMemoryQuestionsRepository = new InMemoryQuestionsRepository(
+      inMemoryQuestionAttachmentsRepository,
+      inMemoryAttachmentRepository,
+      inMemoryStudentsRepository
+    )
 
     inMemoryAnswerAttachmentsRepository = new InMemoryAnswerAttachmentsRepository()
     inMemoryAnswersrepository = new InMemoryAnswersRepository(inMemoryAnswerAttachmentsRepository)
