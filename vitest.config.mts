@@ -6,6 +6,7 @@ export default defineConfig({
   test: {
     globals: true,
     root: './',
+    exclude: ['**/node_modules/**', '**/dist/**', '**/*.e2e.spec.ts'],
   },
   plugins: [
     tsConfigPaths(),
