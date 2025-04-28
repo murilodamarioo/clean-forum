@@ -5,7 +5,7 @@ import { AnswersRepository } from '@/domain/forum/application/repositories/answe
 import { QuestionBestAnswerChosenEvent } from '@/domain/forum/enterprise/entities/events/question-best-answer-chosen-envent'
 import { Injectable } from '@nestjs/common'
 
-Injectable()
+@Injectable()
 export class OnQuestionBestAnswerChosen implements EventHandler {
   constructor(
     private answersRepository: AnswersRepository,
