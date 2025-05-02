@@ -12,7 +12,7 @@ export interface SendNotificationUseCaseRequest {
 
 export type SendNotificationUseCaseResponse = Either<null, { notification: Notification }>
 
-Injectable()
+@Injectable()
 export class SendNotificationUseCase {
   constructor(private notificationsRepository: NotificationsRepository) {}
  
