@@ -45,14 +45,6 @@ export class PrismaQuestionsRepository implements QuestionsRepository {
   }
 
   async findBySlug(slug: string): Promise<Question | null> {
-    const cacheHit = await this.cache.get(`question:${slug}:details`)
-
-    if (cacheHit) {
-      const cachedData = JSON.parse(cacheHit)
-
-      return cachedData
-    }
-
     const question = await this.prisma.question.findFirst({
       where: {
         slug
@@ -61,14 +53,18 @@ export class PrismaQuestionsRepository implements QuestionsRepository {
 
     if (!question) return null
 
-    const questionDetails = PrismaQuestionMapper.toDomain(question)
-
-    await this.cache.set(`question:${slug}:details`, JSON.stringify(questionDetails))
-
-    return questionDetails
+    return PrismaQuestionMapper.toDomain(question)
   }
 
   async findDetailsBySlug(slug: string): Promise<QuestionDetails | null> {
+    const cacheHit = await this.cache.get(`question:${slug}:details`)
+
+    if (cacheHit) {
+      const cachedData = JSON.parse(cacheHit)
+
+      return cachedData
+    }
+
     const question = await this.prisma.question.findFirst({
       where: {
         slug
@@ -81,7 +77,11 @@ export class PrismaQuestionsRepository implements QuestionsRepository {
 
     if (!question) return null
 
-    return PrismaQuestionDetailsMapper.toDomain(question)
+    const questionDetails = PrismaQuestionDetailsMapper.toDomain(question)
+
+    await this.cache.set(`question:${slug}:details`, JSON.stringify(questionDetails))
+
+    return questionDetails
   }
 
   async create(question: Question): Promise<void> {
